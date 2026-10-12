@@ -26,12 +26,18 @@ describe "Nave de carga" {
 		assert.equals(0, naveVacia.carga())
 	}
 
+	test "propulsar nave de carga sin velocidad" {
+		naveVacia.propulsar()
+		assert.equals(20000, naveVacia.velocidad())
+	} 
+
 }
 
 describe "Nave de pasajeros" {
 
 	const naveSinPasajeros = new NaveDePasajeros()
 	const naveConPasajeros = new NaveDePasajeros(cantidadDePasajeros = 296, velocidad = 290000)
+	const naveConPasajeronSinVelocidad = new NaveDePasajeros(cantidadDePasajeros = 296)
 
 	test "velocidad maxima sin pasajeros" {
 		assert.equals(75000, naveSinPasajeros.velocidadMaximaLegal())
@@ -52,6 +58,22 @@ describe "Nave de pasajeros" {
 	test "recibir amenaza" {
 		naveSinPasajeros.recibirAmenaza()
 		assert.that(naveSinPasajeros.alarma())
+	}
+
+	test "propulsar nave de pasajeros a 290.000 kms/seg" {
+		naveConPasajeros.propulsar()
+		assert.equals(300000, naveConPasajeros.velocidad())
+	}
+
+	test "preprar para viajar nave de pasajeros" {
+		naveConPasajeros.prepararParaViajar()
+		assert.equals(300000, naveConPasajeros.velocidad())
+	}
+
+	test "encontrar enemigo con nave de pasajeros y sin velocidad" {
+		naveConPasajeronSinVelocidad.encontrarEnemigo()
+		assert.equals(20000, naveConPasajeronSinVelocidad.velocidad())
+		assert.that(naveConPasajeronSinVelocidad.alarma())
 	}
 
 }
@@ -83,4 +105,27 @@ describe "Nave de combate" {
 		naveEnAtaque.recibirAmenaza()
 		assert.equals("Enemigo encontrado", naveEnAtaque.ultimoMensaje())
 	}
+
+	test "preparar para viajar nave sin velocidad en modo ataque" {
+		naveEnAtaque.prepararParaViajar()
+		assert.equals(15000, naveEnAtaque.velocidad())
+		assert.equals("Volviendo a la base", naveEnAtaque.mensajesEmitidos().first())
+	}
+	
+	test "preprarar para viajar nave en modo reposo y sin velocidad" {
+		naveEnReposo.prepararParaViajar()
+		assert.equals(15000, naveEnReposo.velocidad())
+		assert.equals("Saliendo en misión", naveEnReposo.mensajesEmitidos().first())
+	}
+}
+
+describe "Nave de Residuos Radioactivos" {
+
+	const naveSinVelocidadSinSellar = new NaveDeCargaRadiactiva()
+	test "preparar para viajar nave sin sellar y sin velocidad" {
+		naveSinVelocidadSinSellar.prepararParaViajar()
+		assert.equals(15000, naveSinVelocidadSinSellar.velocidad())
+		assert.that(naveSinVelocidadSinSellar.sellada())
+	}
+
 }
