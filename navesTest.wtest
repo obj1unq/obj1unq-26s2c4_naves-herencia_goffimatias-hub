@@ -26,6 +26,11 @@ describe "Nave de carga" {
 		assert.equals(0, naveVacia.carga())
 	}
 
+	test "propulsar nave de carga sin velocidad" {
+		naveVacia.propulsar()
+		assert.equals(20000, naveVacia.velocidad())
+	} 
+
 }
 
 describe "Nave de pasajeros" {
@@ -52,6 +57,11 @@ describe "Nave de pasajeros" {
 	test "recibir amenaza" {
 		naveSinPasajeros.recibirAmenaza()
 		assert.that(naveSinPasajeros.alarma())
+	}
+
+	test "propulsar nave de pasajeros a 290.000 kms/seg" {
+		naveConPasajeros.propulsar()
+		assert.equals(300000, naveConPasajeros.velocidad())
 	}
 
 }
@@ -83,4 +93,6 @@ describe "Nave de combate" {
 		naveEnAtaque.recibirAmenaza()
 		assert.equals("Enemigo encontrado", naveEnAtaque.ultimoMensaje())
 	}
+
 }
+
