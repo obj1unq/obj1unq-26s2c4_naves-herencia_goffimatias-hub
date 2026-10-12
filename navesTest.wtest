@@ -64,6 +64,11 @@ describe "Nave de pasajeros" {
 		assert.equals(300000, naveConPasajeros.velocidad())
 	}
 
+	test "preprar para viajar nave de pasajeros" {
+		naveConPasajeros.prepararParaViajar()
+		assert.equals(300000, naveConPasajeros.velocidad())
+	}
+
 }
 
 describe "Nave de combate" {
@@ -94,5 +99,26 @@ describe "Nave de combate" {
 		assert.equals("Enemigo encontrado", naveEnAtaque.ultimoMensaje())
 	}
 
+	test "preparar para viajar nave sin velocidad en modo ataque" {
+		naveEnAtaque.prepararParaViajar()
+		assert.equals(15000, naveEnAtaque.velocidad())
+		assert.equals("Volviendo a la base", naveEnAtaque.mensajesEmitidos().first())
+	}
+	
+	test "preprarar para viajar nave en modo reposo y sin velocidad" {
+		naveEnReposo.prepararParaViajar()
+		assert.equals(15000, naveEnReposo.velocidad())
+		assert.equals("Saliendo en misión", naveEnReposo.mensajesEmitidos().first())
+	}
 }
 
+describe "Nave de Residuos Radioactivos" {
+
+	const naveSinVelocidadSinSellar = new NaveDeCargaRadiactiva()
+	test "preparar para viajar nave sin sellar y sin velocidad" {
+		naveSinVelocidadSinSellar.prepararParaViajar()
+		assert.equals(15000, naveSinVelocidadSinSellar.velocidad())
+		assert.that(naveSinVelocidadSinSellar.estaSelladaAlVacio())
+	}
+
+}

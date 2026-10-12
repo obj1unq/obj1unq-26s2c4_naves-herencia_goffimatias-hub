@@ -6,6 +6,10 @@ class Nave {
 	method propulsar() {
 		velocidad = if (velocidad + 20000 > 300000) 300000 else velocidad + 20000
 	}
+
+	method prepararParaViajar() {
+		velocidad = if (velocidad + 15000 > 300000) 300000 else velocidad + 15000
+	}
 }
 
 class NaveDeCarga inherits Nave {
@@ -18,6 +22,25 @@ class NaveDeCarga inherits Nave {
 
 	override method recibirAmenaza() {
 		carga = 0
+	}
+
+}
+
+class NaveDeCargaRadiactiva inherits NaveDeCarga {
+	var selladaAlVacio = false
+
+	override method recibirAmenaza() {
+		selladaAlVacio = true
+		velocidad = 0
+	}
+
+	method estaSelladaAlVacio() {
+		return selladaAlVacio
+	}
+
+	override method prepararParaViajar() {
+		selladaAlVacio = true
+		super()
 	}
 
 }
@@ -55,6 +78,10 @@ class NaveDeCombate inherits Nave {
 		modo.recibirAmenaza(self)
 	}
 
+	override method prepararParaViajar() {
+		modo.prepararParaViajar(self)
+		super()
+	}
 }
 
 object reposo {
@@ -65,6 +92,11 @@ object reposo {
 		nave.emitirMensaje("¡RETIRADA!")
 	}
 
+	method prepararParaViajar(nave) {
+		nave.emitirMensaje("Saliendo en misión")
+		nave.modo(ataque)  
+	}
+
 }
 
 object ataque {
@@ -73,6 +105,10 @@ object ataque {
 
 	method recibirAmenaza(nave) {
 		nave.emitirMensaje("Enemigo encontrado")
+	}
+
+	method prepararParaViajar(nave) {
+		nave.emitirMensaje("Volviendo a la base")
 	}
 
 }
