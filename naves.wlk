@@ -10,6 +10,11 @@ class Nave {
 	method prepararParaViajar() {
 		velocidad = if (velocidad + 15000 > 300000) 300000 else velocidad + 15000
 	}
+
+	method encontrarEnemigo() {
+		self.recibirAmenaza()
+		self.propulsar()
+	}
 }
 
 class NaveDeCarga inherits Nave {
@@ -27,19 +32,15 @@ class NaveDeCarga inherits Nave {
 }
 
 class NaveDeCargaRadiactiva inherits NaveDeCarga {
-	var selladaAlVacio = false
+	var property sellada = false
 
 	override method recibirAmenaza() {
-		selladaAlVacio = true
+		sellada = true
 		velocidad = 0
 	}
 
-	method estaSelladaAlVacio() {
-		return selladaAlVacio
-	}
-
 	override method prepararParaViajar() {
-		selladaAlVacio = true
+		sellada = true
 		super()
 	}
 
